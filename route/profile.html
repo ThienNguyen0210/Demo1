@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diễn đàn Cộng đồng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        .nav-link:hover {
+            color: #f8f8f8;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .thread-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .copy-btn:hover {
+            background-color: #3a3a5e;
+        }
+        .mobile-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.active {
+            max-height: 1000px;
+        }
+        .cookie-banner {
+            animation: slideUp 0.5s ease forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body style="    transform: scale(0.75);
+    transform-origin: top left;
+    width: 133.33%; /* Để không bị thu hẹp nội dung */" class="bg-gray-900 text-gray-200 font-sans">
+    <!-- Thanh trên cùng -->
+    <div class="gradient-bg py-2 px-4 flex justify-between items-center" style="">
+        <div class="flex space-x-4">
+            <a target="_blank" href="/login" class="text-blue-400 hover:text-blue-300 text-sm font-medium" id="loggin" >Đăng nhập</a>
+            <a target="_blank" href="/register" class="text-blue-400 hover:text-blue-300 text-sm font-medium" id="register" onclick="showForm('register')">Đăng ký</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-4">
+            <span class="text-sm">Tham gia cùng <span class="font-bold text-yellow-300">33,000+</span> người chơi trực tuyến khác!</span>
+            <a class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm font-medium">Chơi ngay</a>
+        </div>
+    </div>
+
+    <!-- Phần đầu trang -->
+    <header class="gradient-bg py-4 px-6">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <a class="flex items-center">
+                </a>
+                <div class="ml-4 md:hidden">
+                    <button id="mobile-menu-btn" class="text-white">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-1">
+                <a href="/" class="nav-link px-4 py-2 rounded">Trang chủ</a>
+                <a class="nav-link px-4 py-2 rounded">Bảng xếp hạng</a>
+                <div class="group relative">
+                    <a class="nav-link px-4 py-2 rounded flex items-center">
+                        Diễn đàn <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                    </a>
+                    <div class="absolute hidden group-hover:block bg-gray-800 rounded shadow-lg z-10 min-w-max">
+                        <a class="block px-4 py-2 hover:bg-gray-700">Bài viết mới</a>
+                        <a class="block px-4 py-2 hover:bg-gray-700">Tìm kiếm diễn đàn</a>
+                    </div>
+                </div>
+                <a class="nav-link px-4 py-2 rounded">Wiki</a>
+                <div class="group relative">
+                    <a class="nav-link px-4 py-2 rounded flex items-center">
+                        Quy tắc <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                    </a>
+                    <div class="absolute hidden group-hover:block bg-gray-800 rounded shadow-lg z-10 min-w-max">
+                        <a class="block px-4 py-2 hover:bg-gray-700">Quy tắc máy chủ</a>
+                        <a class="block px-4 py-2 hover:bg-gray-700">Quy tắc trò chơi</a>
+                        <a class="block px-4 py-2 hover:bg-gray-700">Quy tắc diễn đàn</a>
+                        <a class="block px-4 py-2 hover:bg-gray-700">Điều khoản dịch vụ</a>
+                        <a class="block px-4 py-2 hover:bg-gray-700">Chính sách bảo mật</a>
+                    </div>
+                </div>
+                <a class="nav-link px-4 py-2 rounded">Hỗ trợ</a>
+                <a class="nav-link px-4 py-2 rounded">Cửa hàng</a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-4">
+                <a class="text-blue-400 hover:text-blue-300 flex items-center">
+                    <i class="fas fa-bell mr-1"></i> Có gì mới
+                </a>
+                <a class="text-blue-400 hover:text-blue-300 flex items-center">
+                    <i class="fas fa-search mr-1"></i> Tìm kiếm
+                </a>
+            </div>
+        </div>
+        
+        <!-- Menu di động -->
+        <div id="mobile-menu" class="mobile-menu md:hidden bg-gray-800 mt-2 rounded-lg">
+            <div class="px-4 py-2">
+                <a class="block py-2 border-b border-gray-700">Trang chủ</a>
+                <a class="block py-2 border-b border-gray-700">Trò chơi</a>
+                <a class="block py-2 border-b border-gray-700">Bảng xếp hạng</a>
+                <a class="block py-2 border-b border-gray-700">Diễn đàn</a>
+                <a class="block py-2 border-b border-gray-700">Wiki</a>
+                <a class="block py-2 border-b border-gray-700">Quy tắc</a>
+                <a class="block py-2 border-b border-gray-700">Hỗ trợ</a>
+                <a class="block py-2">Cửa hàng</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Phần IP máy chủ -->
+    <div class="bg-gray-800 py-4 px-6 text-center">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-center">
+            <span class="text-lg mb-2 md:mb-0 md:mr-4">IP máy chủ » MINEX.COM</span>
+            <button id="copy-btn" class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-1 rounded flex items-center mx-auto md:mx-0">
+                <i class="fas fa-copy mr-2"></i> Nhấn để sao chép!
+            </button>
+        </div>
+    </div>
+
+
+
+
+<main class="max-w-6xl mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+  <!-- BÊN TRÁI: Thông tin người dùng + Đổi mật khẩu -->
+  <div class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+    <h2 class="text-2xl font-bold text-center text-blue-400">👤 Thông tin tài khoản</h2>
+
+    <div class="space-y-2 text-base">
+      <p>👤 <span class="font-semibold">Tài khoản:</span> <span id="playerName">...</span></p>
+      <p>📧 <span class="font-semibold">Email:</span> <span id="emailMask">********@***</span></p>
+      <p>💻 <span class="font-semibold">IP máy chủ:</span> <span id="serverIp">...</span></p>
+    </div>
+
+    <div class="pt-4 border-t border-gray-600">
+      <!-- Nút mở form -->
+      <button onclick="document.getElementById('changePasswordForm').classList.toggle('hidden')"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all">
+        🔁 Đổi mật khẩu
+      </button>
+
+      <!-- Form đổi mật khẩu -->
+      <form id="changePasswordForm" method="POST" action="/change-password"
+        class="mt-4 hidden space-y-3 bg-gray-700 p-4 rounded-lg shadow-inner">
+        <input type="password" name="oldPassword" placeholder="🔐 Mật khẩu cũ" required
+          class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+        <input type="password" name="newPassword" placeholder="🆕 Mật khẩu mới" required
+          class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+        <input type="password" name="confirmPassword" placeholder="🔁 Nhập lại mật khẩu mới" required
+          class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+        <button type="submit"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all">
+          ✅ Xác nhận đổi
+        </button>
+      </form>
+
+      <!-- Thông báo đổi mật khẩu -->
+      <p id="changePasswordMessage" class="text-white font-semibold mt-4"></p>
+    </div>
+  </div>
+
+  <!-- BÊN PHẢI: Lịch sử đăng nhập -->
+  <div class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+    <h2 class="text-xl font-bold text-blue-400 text-center">🕒 Lịch sử đăng nhập</h2>
+    <!--LOGIN_HISTORY-->
+  </div>
+<!-- BÊN DƯỚI: Các tài khoản liên quan -->
+<div class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-4 mt-6">
+  <h2 class="text-xl font-bold text-yellow-400 text-center">👥 Tài khoản liên quan</h2>
+  <!--RELATED_ACCOUNTS-->
+</div>
+
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Chân trang -->
+    <footer class="gradient-bg text-white py-8 px-4">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Về chúng tôi</h3>
+                    <p class="text-sm">Chúng tôi là một mạng lưới trò chơi do cộng đồng điều hành, cung cấp các trò chơi độc đáo và nội dung chất lượng cao cho người chơi trên toàn thế giới.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Liên kết hữu ích</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a class="hover:text-blue-400">Trang chủ</a></li>
+                        <li><a class="hover:text-blue-400">Quy tắc & Chính sách</a></li>
+                        <li><a class="hover:text-blue-400">Hỗ trợ</a></li>
+                        <li><a class="hover:text-blue-400">Trạng thái</a></li>
+                        <li><a class="hover:text-blue-400">Việc làm</a></li>
+                        <li><a class="hover:text-blue-400">Điều khoản dịch vụ</a></li>
+                        <li><a class="hover:text-blue-400">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Theo dõi chúng tôi</h3>
+                    <div class="flex items-center bg-gray-800 p-3 rounded-lg">
+                        <img src="https://via.placeholder.com/48?text=Avatar" alt="Cộng đồng" class="h-12 mr-3">
+                        <div>
+                            <a class="font-medium hover:text-blue-400">Mạng Cộng đồng</a>
+                            <a class="block text-blue-400 hover:text-blue-300 text-sm mt-1">Theo dõi chúng tôi</a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Cửa hàng</h3>
+                    <p class="text-sm mb-4">Hỗ trợ chúng tôi bằng cách mua hạng, đá quý và nhiều thứ khác để giúp chúng tôi tạo ra nội dung chất lượng cao hơn.</p>
+                    <a class="bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-2 px-4 rounded inline-block">Ghé thăm cửa hàng</a>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a class="text-red-500 hover:text-red-400 text-2xl"><i class="fab fa-youtube"></i></a>
+                <a class="text-blue-400 hover:text-blue-300 text-2xl"><i class="fab fa-twitter"></i></a>
+                <a class="text-black hover:text-gray-300 text-2xl"><i class="fab fa-tiktok"></i></a>
+                <a class="text-pink-500 hover:text-pink-400 text-2xl"><i class="fab fa-instagram"></i></a>
+                <a class="text-gray-300 hover:text-white text-2xl"><i class="fab fa-threads"></i></a>
+                <a class="text-blue-300 hover:text-blue-200 text-2xl"><i class="fas fa-cloud"></i></a>
+                <a class="text-blue-600 hover:text-blue-500 text-2xl" href="https://www.facebook.com/tnc0210?locale=vi_VN" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a class="text-indigo-400 hover:text-indigo-300 text-2xl"><i class="fab fa-discord"></i></a>
+                <a class="text-green-400 hover:text-green-300 text-2xl"><i class="fas fa-question-circle"></i></a>
+            </div>
+            
+            <div class="text-center mt-8 text-sm text-gray-400">
+                © 2025 Mạng Cộng đồng. Mọi quyền được bảo lưu.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Banner cookie -->
+    <div id="cookie-banner" class="cookie-banner fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 p-4 shadow-lg z-50">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0 md:mr-4">
+                    <h3 class="font-bold mb-2">Chúng tôi tôn trọng quyền riêng tư của bạn</h3>
+                    <p class="text-sm">Chúng tôi sử dụng <a class="text-blue-400 hover:text-blue-300">cookie cần thiết</a> để trang web này hoạt động và cookie tùy chọn để nâng cao trải nghiệm của bạn.</p>
+                    <a class="text-blue-400 hover:text-blue-300 text-sm">Xem thêm thông tin và tùy chỉnh tùy chọn của bạn</a>
+                </div>
+                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                    <button id="accept-cookies" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">Chấp nhận tất cả cookie</button>
+                    <button id="reject-cookies" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm">Từ chối cookie tùy chọn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<div id="notification" style="display: none; padding: 10px; margin-bottom: 20px; border-radius: 5px;"></div>
+<script>
+// ===== Mobile menu toggle with accessibility =====
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+mobileMenuBtn.setAttribute('aria-expanded', 'false');
+mobileMenuBtn.setAttribute('aria-controls', 'mobile-menu');
+
+mobileMenuBtn.addEventListener('click', () => {
+    const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+    mobileMenu.classList.toggle('active');
+    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+    mobileMenuBtn.querySelector('i').classList.toggle('fa-bars');
+    mobileMenuBtn.querySelector('i').classList.toggle('fa-times');
+});
+
+// ===== Copy server IP with error handling =====
+document.getElementById('copy-btn').addEventListener('click', async function () {
+    try {
+        await navigator.clipboard.writeText('MINEX.COM');
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check mr-2"></i> Copied!';
+        setTimeout(() => {
+            this.innerHTML = originalText;
+        }, 2000);
+    } catch (err) {
+        console.error('Failed to copy:', err);
+        this.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i> Copy Failed!';
+        setTimeout(() => {
+            this.innerHTML = '<i class="fas fa-copy mr-2"></i> Click to Copy!';
+        }, 2000);
+    }
+});
+
+// ===== Cookie banner with localStorage persistence =====
+const cookieBanner = document.getElementById('cookie-banner');
+const acceptCookies = document.getElementById('accept-cookies');
+const rejectCookies = document.getElementById('reject-cookies');
+
+if (localStorage.getItem('cookieConsent')) {
+    cookieBanner.style.display = 'none';
+}
+
+acceptCookies.addEventListener('click', () => {
+    localStorage.setItem('cookieConsent', 'accepted');
+    cookieBanner.style.display = 'none';
+});
+
+rejectCookies.addEventListener('click', () => {
+    localStorage.setItem('cookieConsent', 'rejected');
+    cookieBanner.style.display = 'none';
+});
+
+// ===== Smooth scrolling for anchor links =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// ===== Phân trang cho news =====
+const pageInfo = document.querySelector('.pagination .page-info');
+const pageInput = document.querySelector('.pagination .page-input');
+const goButton = document.querySelector('.pagination .go-button');
+const nextButton = document.querySelector('.pagination .next-button');
+const lastButton = document.querySelector('.pagination .last-button');
+const pageContainer = document.querySelector('.pagination .page-numbers');
+const threads = document.querySelectorAll('.thread-card');
+
+const itemsPerPage = 6;
+let currentPage = 1;
+let totalPages = Math.ceil(threads.length / itemsPerPage);
+
+// Cập nhật hiển thị các bài viết theo trang
+function updateThreadsDisplay() {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    threads.forEach((thread, index) => {
+        thread.style.display = (index >= startIndex && index < endIndex) ? 'block' : 'none';
+    });
+}
+
+// Tạo lại nút phân trang
+function renderPaginationButtons() {
+    pageContainer.innerHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('a');
+        btn.textContent = i;
+        btn.className = 'px-3 py-1 rounded cursor-pointer';
+        if (i === currentPage) {
+            btn.classList.add('bg-blue-600', 'text-white');
+        } else {
+            btn.classList.add('bg-gray-700', 'hover:bg-gray-600', 'text-white');
+        }
+        btn.addEventListener('click', () => {
+            currentPage = i;
+            updatePageDisplay();
+        });
+        pageContainer.appendChild(btn);
+    }
+}
+
+// Cập nhật trang hiện tại + nút + bài viết
+function updatePageDisplay() {
+    pageInfo.textContent = `${currentPage} of ${totalPages}`;
+    renderPaginationButtons();
+    updateThreadsDisplay();
+}
+
+// Các nút điều hướng
+nextButton.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+        currentPage++; // Tăng trang
+        updatePageDisplay();
+    }
+});
+
+lastButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--; // Giảm trang
+        updatePageDisplay();
+    }
+});
+
+
+goButton.addEventListener('click', () => {
+    const inputPage = parseInt(pageInput.value);
+    if (inputPage >= 1 && inputPage <= totalPages) {
+        currentPage = inputPage;
+        updatePageDisplay();
+    } else {
+        alert(`Vui lòng nhập số trang từ 1 đến ${totalPages}`);
+        pageInput.value = currentPage;
+    }
+});
+
+pageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') goButton.click();
+});
+
+// ===== Khởi tạo =====
+updatePageDisplay();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const success = params.get("success");
+  const error = params.get("error");
+  const tb = document.getElementById("thongbao");
+
+  if (success) {
+    tb.textContent = decodeURIComponent(success);
+    tb.style.color = "lime";
+    tb.style.display = "block";
+    setTimeout(() => tb.style.display = "none", 3000);
+  }
+
+  if (error) {
+    tb.textContent = decodeURIComponent(error);
+    tb.style.color = "red";
+    tb.style.display = "block";
+    setTimeout(() => tb.style.display = "none", 3000);
+  }
+});
+
+
+
+   const urlParams = new URLSearchParams(window.location.search);
+  const msg = urlParams.get('msg');
+  const changePasswordMessage = document.getElementById('changePasswordMessage');
+  if (msg) {
+    changePasswordMessage.textContent = decodeURIComponent(msg);
+    changePasswordMessage.style.color = msg.includes("thành công") ? "lime" : "red";
+    setTimeout(() => changePasswordMessage.textContent = "", 3000);
+  }
+</script>
+</body>
+</html>
